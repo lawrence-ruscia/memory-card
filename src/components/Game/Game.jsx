@@ -1,15 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card } from '../Card/Card';
 import { getCards } from '../../card-images';
+
 export const Game = () => {
   const [score, setScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
-  const [cards, setCards] = useState([...getCards()]);
+  const [cards, setCards] = useState(null);
+
   if (score > bestScore) {
     setBestScore(score);
   }
 
-  const handleCardClick = (id) => {
+  async function fetchCards() {
+    const cardData = await getCards();
+    setCards(cardData);
+  }
+
+  useEffect(() => {
+    fetchCards();
+  }, []);
+
+  const handleCardClick = async (id) => {
     console.log(`Clicked card: ${id}`);
     const clickedCard = cards.find((card) => card.id === id);
     if (!clickedCard) {
@@ -17,12 +28,9 @@ export const Game = () => {
     }
 
     if (clickedCard.isClicked) {
-      // Reset and shuffle cards if player clicks an already clicked card
-      setCards(() => {
-        const resetCards = getCards(); // Get original cards
-
-        return shuffleCards(resetCards);
-      });
+      // Reset and shuffle cards if player clicks an already clicked
+      fetchCards();
+      shuffleCards(cards);
 
       setScore(0);
     } else {
@@ -59,8 +67,14 @@ export const Game = () => {
           once!
         </p>
       </div>
-      <ScoreBoard score={score} bestScore={bestScore} />
-      <Deck cards={cards} handleCardClick={handleCardClick} />
+      {cards === null ? (
+        <div>Loading...</div>
+      ) : (
+        <>
+          <ScoreBoard score={score} bestScore={bestScore} />
+          <Deck cards={cards} handleCardClick={handleCardClick} />
+        </>
+      )}
     </div>
   );
 };
