@@ -1,4 +1,9 @@
 .image {
+  display: none;
+}
+
+.loaded {
+  display: block;
   border: 8px solid #e91e63;
   border-radius: 16px;
   max-width: 100%;
