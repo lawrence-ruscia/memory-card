@@ -1,7 +1,7 @@
-import './App.css';
-
+import './App.module.css';
+import { Game } from '../Game/Game';
 function App() {
-  return <div>Hello, World!</div>;
+  return <Game />;
 }
 
 export default App;
