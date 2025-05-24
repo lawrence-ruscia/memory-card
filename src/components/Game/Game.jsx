@@ -1,38 +1,30 @@
 import { useState } from 'react';
 import { Card } from '../Card/Card';
+import { getCards } from '../../card-images';
 export const Game = () => {
   const [score, setScore] = useState(0);
-  const [bestScore, setBestScore] = useState(score);
-  const [cards, setCards] = useState([
-    {
-      id: 1,
-      isClicked: false,
-    },
-    {
-      id: 2,
-      isClicked: false,
-    },
-    {
-      id: 3,
-      isClicked: false,
-    },
-    {
-      id: 4,
-      isClicked: false,
-    },
-  ]);
+  const [bestScore, setBestScore] = useState(0);
+  const [cards, setCards] = useState([...getCards()]);
   if (score > bestScore) {
     setBestScore(score);
   }
 
   const handleCardClick = (id) => {
+    console.log(`Clicked card: ${id}`);
     const clickedCard = cards.find((card) => card.id === id);
     if (!clickedCard) {
       return; // Immediately exit if card is not found
     }
 
     if (clickedCard.isClicked) {
-      setScore(0); // reset game
+      // Reset and shuffle cards if player clicks an already clicked card
+      setCards(() => {
+        const resetCards = getCards(); // Get original cards
+
+        return shuffleCards(resetCards);
+      });
+
+      setScore(0);
     } else {
       // Update score if card has not been clicked
       setScore((prevScore) => prevScore + 1);
@@ -46,6 +38,18 @@ export const Game = () => {
     }
   };
 
+  // Use Fisher-Yates shuffle to shuffle cards array
+  const shuffleCards = (cards) => {
+    const cardsCopy = [...cards];
+    for (let i = cardsCopy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1)); // 0 <= j <= i
+      [cardsCopy[i], cardsCopy[j]] = [cardsCopy[j], cardsCopy[i]]; // Swap cards
+    }
+    console.log(cardsCopy);
+
+    return cardsCopy;
+  };
+
   return (
     <div>
       <div>
@@ -56,9 +60,7 @@ export const Game = () => {
         </p>
       </div>
       <ScoreBoard score={score} bestScore={bestScore} />
-      {cards.map((card) => (
-        <Card id={card.id} handleClick={() => handleCardClick(card.id)} />
-      ))}
+      <Deck cards={cards} handleCardClick={handleCardClick} />
     </div>
   );
 };
@@ -68,6 +70,20 @@ const ScoreBoard = ({ score, bestScore }) => {
     <div>
       <p>Score: {score}</p>
       <p>Best Score: {bestScore}</p>
+    </div>
+  );
+};
+
+const Deck = ({ cards, handleCardClick }) => {
+  return (
+    <div>
+      {cards.map((card) => (
+        <Card
+          id={card.id}
+          key={card.id}
+          handleClick={() => handleCardClick(card.id)}
+        />
+      ))}
     </div>
   );
 };
