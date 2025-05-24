@@ -1,0 +1,23 @@
+@font-face {
+  font-family: 'Inter 28pt';
+  src: url('./assets/fonts/Inter28pt-Regular.woff2') format('woff2'),
+    url('./assets/fonts/Inter28pt-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  font-family: 'Inter', Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+}
