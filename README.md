@@ -1,3 +1,5 @@
 # Neko Match
 
-A memory card game project for The Odin Project
+A Memory Card gane created according to the assignment from The Odin Project React course.
+
+![Screenshot](./src/assets/app-screenshot.png)
