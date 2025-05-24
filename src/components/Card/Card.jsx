@@ -1,7 +1,8 @@
-export const Card = ({ id, url, handleClick }) => {
+import styles from './Card.module.css';
+export const Card = ({ url, handleClick }) => {
   return (
-    <div onClick={handleClick}>
-      <img width={64} src={url} />
+    <div className={styles.container} onClick={handleClick}>
+      <img className={styles.image} src={url} />
     </div>
   );
 };

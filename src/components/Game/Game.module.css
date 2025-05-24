@@ -1,0 +1,17 @@
+.container {
+  padding: 1rem;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3rem;
+}
+
+.highlight {
+  color: #e91e63;
+}
+.deck {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}

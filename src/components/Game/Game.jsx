@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { getCards } from '../../card-images';
 import { ScoreBoard } from './ScoreBoard';
 import { Deck } from './Deck';
+import styles from './Game.module.css';
 
 export const Game = () => {
   const [score, setScore] = useState(0);
@@ -77,21 +78,23 @@ export const Game = () => {
   };
 
   return (
-    <div>
-      <div>
-        <h1>Neko Match</h1>
-        <p>
-          Get points by clicking on an image but don't click on any more than
-          once!
-        </p>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <div>
+          <h1 className={styles.highlight}>Neko Match</h1>
+          <p>
+            Get points by clicking on an image but don't click on any more than
+            once!
+          </p>
+        </div>
+        <ScoreBoard score={score} bestScore={bestScore} />
       </div>
       {cards === null ? (
         <div>Loading...</div>
       ) : (
-        <>
-          <ScoreBoard score={score} bestScore={bestScore} />
+        <div className={styles.content}>
           <Deck cards={cards} handleCardClick={handleCardClick} />
-        </>
+        </div>
       )}
     </div>
   );

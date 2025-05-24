@@ -18,6 +18,19 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+h1,
+p {
+  margin: 0;
+}
+
 body {
   min-height: 100vh;
+  padding: 0;
+  margin: 0;
+  background-color: #0a0d0f;
+  color: #d6d6d6;
 }
