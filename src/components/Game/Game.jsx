@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Card } from '../Card/Card';
 import { getCards } from '../../card-images';
+import { ScoreBoard } from './ScoreBoard';
+import { Deck } from './Deck';
 
 export const Game = () => {
   const [score, setScore] = useState(0);
@@ -11,13 +12,12 @@ export const Game = () => {
     setBestScore(score);
   }
 
-  async function fetchCards() {
-    const cardData = await getCards();
-    setCards(cardData);
-  }
-
   useEffect(() => {
-    fetchCards();
+    async function fillCards() {
+      const cardData = await getCards();
+      setCards(cardData);
+    }
+    fillCards();
   }, []);
 
   const resetCards = (cards) => {
@@ -93,30 +93,6 @@ export const Game = () => {
           <Deck cards={cards} handleCardClick={handleCardClick} />
         </>
       )}
-    </div>
-  );
-};
-
-const ScoreBoard = ({ score, bestScore }) => {
-  return (
-    <div>
-      <p>Score: {score}</p>
-      <p>Best Score: {bestScore}</p>
-    </div>
-  );
-};
-
-const Deck = ({ cards, handleCardClick }) => {
-  return (
-    <div>
-      {cards.map((card) => (
-        <Card
-          id={card.id}
-          url={card.url}
-          key={card.id}
-          handleClick={() => handleCardClick(card.id)}
-        />
-      ))}
     </div>
   );
 };
