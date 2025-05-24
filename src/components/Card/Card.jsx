@@ -1,4 +1,7 @@
-export const Card = ({ id, handleClick }) => {
-  return <div onClick={handleClick}>Card {id}</div>;
+export const Card = ({ id, url, handleClick }) => {
+  return (
+    <div onClick={handleClick}>
+      <img width={64} src={url} />
+    </div>
+  );
 };
-  

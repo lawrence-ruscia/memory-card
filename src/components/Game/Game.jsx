@@ -20,6 +20,22 @@ export const Game = () => {
     fetchCards();
   }, []);
 
+  const resetCards = (cards) => {
+    const newCards = cards.map((card) => {
+      return { ...card, isClicked: false };
+    });
+
+    return newCards;
+  };
+
+  const updateCard = (cards, id) => {
+    const newCards = cards.map((card) =>
+      card.id === id ? { ...card, isClicked: true } : card
+    );
+
+    return newCards;
+  };
+
   const handleCardClick = async (id) => {
     console.log(`Clicked card: ${id}`);
     const clickedCard = cards.find((card) => card.id === id);
@@ -28,9 +44,12 @@ export const Game = () => {
     }
 
     if (clickedCard.isClicked) {
-      // Reset and shuffle cards if player clicks an already clicked
-      fetchCards();
-      shuffleCards(cards);
+      // Reset and shuffle cards
+      setCards((prevCards) => {
+        const latestCards = resetCards(prevCards);
+        const newCards = shuffleCards(latestCards);
+        return newCards;
+      });
 
       setScore(0);
     } else {
@@ -38,11 +57,11 @@ export const Game = () => {
       setScore((prevScore) => prevScore + 1);
 
       // Update card obj in array
-      setCards((prevCards) =>
-        prevCards.map((card) =>
-          card.id === id ? { ...card, isClicked: true } : card
-        )
-      );
+      setCards((prevCards) => {
+        const latestCards = updateCard(prevCards, id);
+        const newCards = shuffleCards(latestCards);
+        return newCards;
+      });
     }
   };
 
@@ -53,7 +72,6 @@ export const Game = () => {
       const j = Math.floor(Math.random() * (i + 1)); // 0 <= j <= i
       [cardsCopy[i], cardsCopy[j]] = [cardsCopy[j], cardsCopy[i]]; // Swap cards
     }
-    console.log(cardsCopy);
 
     return cardsCopy;
   };
@@ -94,6 +112,7 @@ const Deck = ({ cards, handleCardClick }) => {
       {cards.map((card) => (
         <Card
           id={card.id}
+          url={card.url}
           key={card.id}
           handleClick={() => handleCardClick(card.id)}
         />
